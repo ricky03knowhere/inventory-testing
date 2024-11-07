@@ -75,31 +75,3 @@ exports.deleteBarang = async (req, res) => {
 };
 
 
-// Search and sort items by name or transaction date
-exports.searchAndSortBarang = async (req, res) => {
-  const { search, sortBy, order = 'ASC' } = req.query;
-  
-  try {
-    let query = 'SELECT * FROM Barang';
-    
-    // Search filter
-    if (search) {
-      query += ` WHERE NamaBarang LIKE ?`;
-    }
-
-    // Sorting
-    if (sortBy) {
-      const validSortColumns = ['NamaBarang', 'TanggalTransaksi'];
-      if (validSortColumns.includes(sortBy)) {
-        query += ` ORDER BY ${sortBy} ${order}`;
-      }
-    }
-
-    const [rows] = await db.query(query, [`%${search}%`]);
-    res.json(rows);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
-
-

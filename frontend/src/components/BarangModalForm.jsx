@@ -57,7 +57,7 @@ function BarangModalForm({ show, handleClose, fetchBarang, editData }) {
             <Form.Label>Nama Barang</Form.Label>
             <Form.Control
               type="text"
-              placeholder="Enter item name"
+              placeholder="Masukan nama barang"
               value={namaBarang}
               onChange={(e) => setNamaBarang(e.target.value)}
               required
@@ -80,7 +80,7 @@ function BarangModalForm({ show, handleClose, fetchBarang, editData }) {
             <Form.Label>Stok</Form.Label>
             <Form.Control
               type="number"
-              placeholder="Enter stock quantity"
+              placeholder="Masukan jumlah stok"
               value={stok}
               onChange={(e) => setStok(e.target.value)}
               required

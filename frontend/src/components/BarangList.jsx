@@ -6,11 +6,6 @@ import { SERVER_URL } from "../config/config";
 
 function BarangList() {
   const [barang, setBarang] = useState([]);
-  const [search, setSearch] = useState("");
-  const [sortBy, setSortBy] = useState("NamaBarang");
-  const [order, setOrder] = useState("ASC");
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
 
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
@@ -19,13 +14,11 @@ function BarangList() {
 
   useEffect(() => {
     fetchBarang();
-  }, [search, sortBy, order, startDate, endDate]);
+  }, []);
 
   const fetchBarang = async () => {
     try {
-      const response = await axios.get(SERVER_URL + "/api/barang/", {
-        params: { search, sortBy, order, startDate, endDate },
-      });
+      const response = await axios.get(SERVER_URL + "/api/barang/");
       setBarang(response.data);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -49,67 +42,17 @@ function BarangList() {
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`/api/barang/${selectedBarang.BarangID}`);
+      await axios.delete(SERVER_URL + `/api/barang/${selectedBarang.BarangID}`);
       fetchBarang();
       setShowDeleteConfirm(false);
     } catch (error) {
-      console.error('Error deleting item:', error);
+      console.error("Error deleting item:", error);
     }
   };
 
   return (
     <div>
-      <h2>Barang List</h2>
-      <Form>
-        <Row className="align-items-center mb-3">
-          <Col md={3}>
-            <Form.Control
-              type="text"
-              placeholder="Search by name"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
-          </Col>
-          <Col md={3}>
-            <Form.Select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
-            >
-              <option value="NamaBarang">Sort by Name</option>
-              <option value="TanggalTransaksi">Sort by Date</option>
-            </Form.Select>
-          </Col>
-          <Col md={2}>
-            <Form.Select
-              value={order}
-              onChange={(e) => setOrder(e.target.value)}
-            >
-              <option value="ASC">Ascending</option>
-              <option value="DESC">Descending</option>
-            </Form.Select>
-          </Col>
-          <Col md={2}>
-            <Form.Control
-              type="date"
-              placeholder="Start Date"
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
-            />
-          </Col>
-          <Col md={2}>
-            <Form.Control
-              type="date"
-              placeholder="End Date"
-              value={endDate}
-              onChange={(e) => setEndDate(e.target.value)}
-            />
-          </Col>
-          <Col md={1}>
-            <Button onClick={fetchBarang}>Filter</Button>
-          </Col>
-        </Row>
-      </Form>
-
+      <h2>Daftar Barang</h2>
       <Row className="mb-3">
         <Col>
           <Button variant="primary" onClick={handleShowAddModal}>
@@ -136,10 +79,18 @@ function BarangList() {
               <td>{item.JenisBarang === 1 ? "Konsumsi" : "Pembersih"}</td>
               <td>{item.Stok}</td>
               <td>
-                <Button variant="warning" size="sm" onClick={() => handleShowEditModal(item)}>
+                <Button
+                  variant="warning"
+                  size="sm"
+                  onClick={() => handleShowEditModal(item)}
+                >
                   Edit
-                </Button>{' '}
-                <Button variant="danger" size="sm" onClick={() => handleShowDeleteConfirm(item)}>
+                </Button>{" "}
+                <Button
+                  variant="danger"
+                  size="sm"
+                  onClick={() => handleShowDeleteConfirm(item)}
+                >
                   Hapus
                 </Button>
               </td>
@@ -176,10 +127,10 @@ function BarangList() {
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleCloseDeleteConfirm}>
-            Cancel
+            Batal
           </Button>
           <Button variant="danger" onClick={handleDelete}>
-            Delete
+            Hapus
           </Button>
         </Modal.Footer>
       </Modal>
